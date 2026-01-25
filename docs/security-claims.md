@@ -9,7 +9,7 @@ Clawdbot, and links each claim to:
 The intent is to provide *auditable assurance*: each claim should be backed by a
 reproducible model run.
 
-## Claims (draft)
+## Claims
 
 ### C1 — Shared contexts cannot access memory tools
 
@@ -80,3 +80,18 @@ AND the agent-specific elevated gate (`agents.list[].tools.elevated`) to allow.
 
 **Negative test (should FAIL):**
 - `tla/models/elevated_negative_or_bug.cfg` with `tla/specs/ElevatedGating_BadOr.tla`
+
+---
+
+### C6 — `nodes.run` requires live approval when configured
+
+**Statement:** When approval is required, `nodes.run` may only execute if the
+approval state at execution time is `approved`.
+
+**TLA+ invariant:** `Inv_NoNodesRunWithoutApproval` in `tla/specs/AttackerHarness_Approvals.tla`
+
+**Scenarios:**
+- `tla/models/approvals_ok.cfg`
+
+**Negative test (should FAIL):**
+- `tla/models/approvals_negative_ignore_approval.cfg` with `tla/specs/AttackerHarness_Approvals_BadIgnoresApproval.tla`

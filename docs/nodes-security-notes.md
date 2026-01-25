@@ -50,3 +50,15 @@ Notable default:
 
 ### NS5 — no bypass via tool groups/aliases/subagents
 
+
+## Coverage (current)
+
+- **NS3 (denyCommands wins):** `tla/specs/NodesCommandPolicy.tla` (`Inv_DenyWins`) + `make nodes-policy`
+- **NS4 (node must declare commands):**
+  - gateway policy: `tla/specs/NodesCommandPolicy.tla` (`Inv_AllowedImpliesDeclared`) + `make nodes-policy`
+  - attacker harness negative: `make attacker-nodes-negative`
+- **NS2 (system.run gated + approvals):** `tla/specs/AttackerHarness_Approvals.tla` + `make approvals`
+
+TODO:
+- **NS1 (no nodes actions from shared by default):** model actual tool policy resolution + session classification.
+- **NS5 (no bypass via groups/aliases/subagents):** compose attacker harness with conformance-derived tool groups + subagent model.
