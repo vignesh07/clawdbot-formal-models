@@ -4,26 +4,24 @@ EXTENDS Naturals, FiniteSets
 (******************************************************************************
 * ToolGroupExpansion.tla
 *
-* Claim (from docs): tool groups expand to specific tool sets.
-* For security, we care that group:memory expands to {memory_search, memory_get}
-* (and not less / not more).
+* Conformance/security check: tool groups expand to specific tool sets.
 *
-* We'll model a small universe Tools and a constant GroupMemory representing
-* the implementation's expansion of group:memory.
+* We treat tool ids as *strings* (TLC model values). This avoids confusion
+* between TLA+ identifiers and model values.
 ******************************************************************************)
 
 CONSTANTS
-  Tools,
-  memory_search, memory_get,
-  GroupMemory
+  Tools,        \* SUBSET STRING
+  GroupMemory   \* SUBSET Tools (implementation's expansion of group:memory)
 
 ASSUME
   /\ Tools /= {}
-  /\ memory_search \in Tools
-  /\ memory_get \in Tools
   /\ GroupMemory \subseteq Tools
 
-Inv_GroupMemoryExact == GroupMemory = {memory_search, memory_get}
+MemorySearch == "memory_search"
+MemoryGet == "memory_get"
+
+Inv_GroupMemoryExact == GroupMemory = {MemorySearch, MemoryGet}
 
 \* Trivial TLC behavior
 VARIABLE dummy
