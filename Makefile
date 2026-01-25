@@ -1,7 +1,7 @@
 TLC=./bin/tlc
 MODEL?=tla/models/basic.cfg
 
-.PHONY: tlc precedence precedence-negative groups groups-negative elevated elevated-negative
+.PHONY: tlc precedence precedence-negative groups groups-negative elevated elevated-negative nodes-policy nodes-policy-negative
 
 # Run TLC with a pinned, in-repo model config
 
@@ -31,3 +31,11 @@ elevated:
 
 elevated-negative:
 	$(TLC) -workers auto -config tla/models/elevated_negative_or_bug.cfg tla/specs/ElevatedGating_BadOr.tla
+
+# Nodes gateway command policy checks
+
+nodes-policy:
+	$(TLC) -workers auto -config tla/models/nodes_policy_ok.cfg tla/specs/NodesCommandPolicy.tla
+
+nodes-policy-negative:
+	$(TLC) -workers auto -config tla/models/nodes_policy_negative_bad_impl_allows_undeclared.cfg tla/specs/NodesCommandPolicy_BadNoDeclareCheck.tla
