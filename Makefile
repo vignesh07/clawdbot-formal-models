@@ -1,7 +1,7 @@
 TLC=./bin/tlc
 MODEL?=tla/models/basic.cfg
 
-.PHONY: tlc precedence precedence-negative groups groups-negative elevated elevated-negative nodes-policy nodes-policy-negative attacker attacker-negative attacker-nodes-negative attacker-nodes-allowlist attacker-nodes-allowlist-negative approvals approvals-negative approvals-token approvals-token-negative
+.PHONY: tlc precedence precedence-negative groups groups-negative elevated elevated-negative nodes-policy nodes-policy-negative attacker attacker-negative attacker-nodes-negative attacker-nodes-allowlist attacker-nodes-allowlist-negative approvals approvals-negative approvals-token approvals-token-negative nodes-pipeline nodes-pipeline-negative
 
 # Run TLC with a pinned, in-repo model config
 
@@ -72,3 +72,10 @@ approvals-token:
 
 approvals-token-negative:
 	$(TLC) -workers auto -deadlock -config tla/models/approvals_token_negative_replay.cfg tla/specs/AttackerHarness_ApprovalsToken_BadReplay.tla
+
+# Composed nodes.run pipeline harness (allowlist + declared + tokenized approval)
+nodes-pipeline:
+	$(TLC) -workers auto -deadlock -config tla/models/nodes_pipeline_ok.cfg tla/specs/NodesPipelineHarness.tla
+
+nodes-pipeline-negative:
+	$(TLC) -workers auto -deadlock -config tla/models/nodes_pipeline_negative_replay.cfg tla/specs/NodesPipelineHarness_BadReplay.tla
