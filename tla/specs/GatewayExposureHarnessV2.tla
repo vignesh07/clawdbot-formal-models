@@ -44,7 +44,7 @@ ResolveBind ==
     [] BindMode = "lan" -> "non-loopback"
     [] BindMode = "custom" -> "non-loopback"
     [] BindMode = "tailnet" -> "non-loopback"
-    [] BindMode = "auto" -> CHOOSE b \in {"loopback","non-loopback"}: TRUE
+    [] BindMode = "auto" -> "non-loopback"
 
 \* Resolve auth mode like resolveGatewayAuth (simplified)
 ResolveMode ==
