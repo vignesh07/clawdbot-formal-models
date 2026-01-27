@@ -53,5 +53,11 @@ Output:
 
 ## Next steps
 
+## CI
+
+**Mode A (today):** CI runs TLC targets directly in this repo (no dependency on the main Clawdbot repo).
+
+**Mode B (planned):** add a conformance job that checks out `clawdbot/clawdbot` alongside this repo and regenerates extracted constants (e.g. tool-group expansions). CI fails if the generated artifacts drift from what is committed here.
+
 - Add CI to run TLC on PRs and upload counterexample traces as artifacts.
 - Deepen fidelity: pairing-store concurrency/locking, provider-specific ingress nuances, routing identity-link semantics.

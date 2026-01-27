@@ -1,0 +1,60 @@
+name: TLC (formal models)
+
+on:
+  pull_request:
+  push:
+    branches: [ main ]
+
+jobs:
+  tlc:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Run green models
+        run: |
+          set -euo pipefail
+          make gateway-exposure-v2
+          make gateway-exposure-v2-protected
+          make nodes-pipeline
+          make approvals-token
+          make pairing
+          make pairing-cap
+          make ingress-gating
+          make routing-isolation
+
+      - name: Run negative models (expected to fail)
+        run: |
+          set -euo pipefail
+
+          run_expect_fail() {
+            target="$1"
+            echo "::group::${target} (expected fail)"
+            if make "$target" >"/tmp/${target}.log" 2>&1; then
+              echo "ERROR: ${target} unexpectedly succeeded"
+              tail -n 80 "/tmp/${target}.log" || true
+              exit 1
+            fi
+            # TLC failure signatures (invariant violated / parsing error are both "fail")
+            if ! grep -Eq "Invariant .* is violated|Error: The invariant" "/tmp/${target}.log"; then
+              echo "ERROR: ${target} failed but did not look like an invariant violation"
+              tail -n 120 "/tmp/${target}.log" || true
+              exit 1
+            fi
+            echo "::endgroup::"
+          }
+
+          run_expect_fail gateway-exposure-v2-negative
+          run_expect_fail nodes-pipeline-negative
+          run_expect_fail approvals-token-negative
+          run_expect_fail pairing-negative
+          run_expect_fail pairing-cap-negative
+          run_expect_fail ingress-gating-negative
+          run_expect_fail routing-isolation-negative
