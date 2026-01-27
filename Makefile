@@ -1,7 +1,7 @@
 TLC=./bin/tlc
 MODEL?=tla/models/basic.cfg
 
-.PHONY: tlc precedence precedence-negative groups groups-negative elevated elevated-negative nodes-policy nodes-policy-negative attacker attacker-negative attacker-nodes-negative attacker-nodes-allowlist attacker-nodes-allowlist-negative approvals approvals-negative approvals-token approvals-token-negative nodes-pipeline nodes-pipeline-negative gateway-exposure gateway-exposure-negative gateway-exposure-v2 gateway-exposure-v2-negative gateway-exposure-v2-protected gateway-exposure-v2-protected-negative gateway-exposure-v2-unsafe-custom gateway-exposure-v2-unsafe-tailnet gateway-exposure-v2-protected-custom gateway-exposure-v2-protected-tailnet gateway-exposure-v2-protected-password gateway-exposure-v2-unsafe-auto gateway-exposure-v2-protected-auto gateway-auth-conformance gateway-auth-conformance-negative gateway-auth-tailscale gateway-auth-tailscale-negative gateway-auth-proxy gateway-auth-proxy-negative pairing pairing-negative pairing-cap pairing-cap-negative pairing-idempotency pairing-idempotency-negative ingress-gating ingress-gating-negative ingress-trace ingress-trace-negative ingress-trace2 ingress-trace2-negative routing-isolation routing-isolation-negative routing-precedence routing-precedence-negative pairing-race pairing-race-negative
+.PHONY: tlc precedence precedence-negative groups groups-negative elevated elevated-negative nodes-policy nodes-policy-negative attacker attacker-negative attacker-nodes-negative attacker-nodes-allowlist attacker-nodes-allowlist-negative approvals approvals-negative approvals-token approvals-token-negative nodes-pipeline nodes-pipeline-negative gateway-exposure gateway-exposure-negative gateway-exposure-v2 gateway-exposure-v2-negative gateway-exposure-v2-protected gateway-exposure-v2-protected-negative gateway-exposure-v2-unsafe-custom gateway-exposure-v2-unsafe-tailnet gateway-exposure-v2-protected-custom gateway-exposure-v2-protected-tailnet gateway-exposure-v2-protected-password gateway-exposure-v2-unsafe-auto gateway-exposure-v2-protected-auto gateway-auth-conformance gateway-auth-conformance-negative gateway-auth-tailscale gateway-auth-tailscale-negative gateway-auth-proxy gateway-auth-proxy-negative pairing pairing-negative pairing-cap pairing-cap-negative pairing-idempotency pairing-idempotency-negative pairing-refresh pairing-refresh-negative ingress-gating ingress-gating-negative ingress-trace ingress-trace-negative ingress-trace2 ingress-trace2-negative routing-isolation routing-isolation-negative routing-precedence routing-precedence-negative pairing-race pairing-race-negative
 
 # Run TLC with a pinned, in-repo model config
 
@@ -174,6 +174,14 @@ pairing-idempotency:
 
 pairing-idempotency-negative:
 	$(TLC) -workers 1 -deadlock -config tla/models/pairing_idempotency_negative.cfg tla/specs/PairingStoreIdempotencyHarness_BadDuplicates.tla
+
+# Pairing refresh enablement harness (R1+++)
+
+pairing-refresh:
+	$(TLC) -workers 1 -deadlock -config tla/models/pairing_refresh_enabled_ok.cfg tla/specs/PairingStoreRefreshEnabledHarness.tla
+
+pairing-refresh-negative:
+	$(TLC) -workers 1 -deadlock -config tla/models/pairing_refresh_enabled_negative.cfg tla/specs/PairingStoreRefreshEnabledHarness_BadCapOnRefresh.tla
 
 # Ingress gating harness (R2)
 
