@@ -1,7 +1,7 @@
 TLC=./bin/tlc
 MODEL?=tla/models/basic.cfg
 
-.PHONY: tlc precedence precedence-negative groups groups-negative elevated elevated-negative nodes-policy nodes-policy-negative attacker attacker-negative attacker-nodes-negative attacker-nodes-allowlist attacker-nodes-allowlist-negative approvals approvals-negative approvals-token approvals-token-negative nodes-pipeline nodes-pipeline-negative gateway-exposure gateway-exposure-negative gateway-exposure-v2 gateway-exposure-v2-negative gateway-exposure-v2-protected gateway-exposure-v2-protected-negative gateway-exposure-v2-unsafe-custom gateway-exposure-v2-unsafe-tailnet gateway-exposure-v2-protected-custom gateway-exposure-v2-protected-tailnet gateway-exposure-v2-protected-password gateway-exposure-v2-unsafe-auto gateway-exposure-v2-protected-auto gateway-auth-conformance gateway-auth-conformance-negative gateway-auth-tailscale gateway-auth-tailscale-negative gateway-auth-proxy gateway-auth-proxy-negative pairing pairing-negative pairing-cap pairing-cap-negative pairing-idempotency pairing-idempotency-negative pairing-refresh pairing-refresh-negative pairing-refresh-race pairing-refresh-race-negative ingress-gating ingress-gating-negative ingress-idempotency ingress-idempotency-negative ingress-dedupe-fallback ingress-dedupe-fallback-negative ingress-trace ingress-trace-negative ingress-trace2 ingress-trace2-negative routing-isolation routing-isolation-negative routing-precedence routing-precedence-negative pairing-race pairing-race-negative routing-identitylinks routing-identitylinks-negative routing-identity-transitive routing-identity-transitive-negative routing-identity-symmetry routing-identity-symmetry-negative routing-identity-channel-override routing-identity-channel-override-negative routing-thread-parent routing-thread-parent-negative discord-pluralkit discord-pluralkit-negative ingress-retry ingress-retry-negative session-key-stability session-key-stability-negative session-explosion-bound group-alias-check
+.PHONY: tlc precedence precedence-negative groups groups-negative elevated elevated-negative nodes-policy nodes-policy-negative attacker attacker-negative attacker-nodes-negative attacker-nodes-allowlist attacker-nodes-allowlist-negative approvals approvals-negative approvals-token approvals-token-negative nodes-pipeline nodes-pipeline-negative gateway-exposure gateway-exposure-negative gateway-exposure-v2 gateway-exposure-v2-negative gateway-exposure-v2-protected gateway-exposure-v2-protected-negative gateway-exposure-v2-unsafe-custom gateway-exposure-v2-unsafe-tailnet gateway-exposure-v2-protected-custom gateway-exposure-v2-protected-tailnet gateway-exposure-v2-protected-password gateway-exposure-v2-unsafe-auto gateway-exposure-v2-protected-auto gateway-auth-conformance gateway-auth-conformance-negative gateway-auth-tailscale gateway-auth-tailscale-negative gateway-auth-proxy gateway-auth-proxy-negative pairing pairing-negative pairing-cap pairing-cap-negative pairing-idempotency pairing-idempotency-negative pairing-refresh pairing-refresh-negative pairing-refresh-race pairing-refresh-race-negative ingress-gating ingress-gating-negative ingress-idempotency ingress-idempotency-negative ingress-dedupe-fallback ingress-dedupe-fallback-negative ingress-trace ingress-trace-negative ingress-trace2 ingress-trace2-negative routing-isolation routing-isolation-negative routing-precedence routing-precedence-negative pairing-race pairing-race-negative routing-identitylinks routing-identitylinks-negative routing-identity-transitive routing-identity-transitive-negative routing-identity-symmetry routing-identity-symmetry-negative routing-identity-channel-override routing-identity-channel-override-negative routing-thread-parent routing-thread-parent-negative discord-pluralkit discord-pluralkit-negative ingress-retry ingress-retry-negative session-key-stability session-key-stability-negative session-explosion-bound config-normalization config-normalization-negative group-alias-check
 
 # Run TLC with a pinned, in-repo model config
 
@@ -321,6 +321,14 @@ session-key-stability-negative:
 
 session-explosion-bound:
 	$(TLC) -workers 1 -config tla/models/session_explosion_ok.cfg tla/specs/SessionExplosionBoundHarness.tla
+
+# Next (non-security): config normalization / migration idempotency
+
+config-normalization:
+	$(TLC) -workers 1 -config tla/models/config_normalization_ok.cfg tla/specs/ConfigNormalizationIdempotencyHarness.tla
+
+config-normalization-negative:
+	$(TLC) -workers 1 -config tla/models/config_normalization_negative.cfg tla/specs/ConfigNormalizationIdempotencyHarness_BadToggle.tla
 
 group-alias-check:
 	node scripts/check-tool-group-alias.mjs
