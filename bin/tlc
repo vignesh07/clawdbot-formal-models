@@ -44,4 +44,11 @@ if ! java_works; then
   exit 1
 fi
 
+# Avoid occasional collisions in TLC's default meta-dir naming (timestamp-based).
+# If callers don't provide -metadir, set one with a high-resolution timestamp.
+if [[ " ${*} " != *" -metadir "* ]]; then
+  META_DIR="$ROOT_DIR/states/$(date +%y-%m-%d-%H-%M-%S)-$RANDOM-$$"
+  exec java -cp "$JAR" tlc2.TLC -metadir "$META_DIR" "$@"
+fi
+
 exec java -cp "$JAR" tlc2.TLC "$@"
