@@ -39,7 +39,7 @@
     "group:nodes": [
       "nodes"
     ],
-    "group:moltbot": [
+    "group:openclaw": [
       "browser",
       "canvas",
       "nodes",
@@ -77,7 +77,7 @@
       "web_fetch",
       "image"
     ],
-    "group:openclaw": [
+    "group:moltbot": [
       "browser",
       "canvas",
       "nodes",
